@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
 
-      //title：手機管理APP程式上面的那一行才看得到
+      //title：手機管理APP程式上面的那一行字
       //theme：APP的主題風格顏色，一改會全部一起變色
-      //home：APP的首頁，必須放widget物件
+      //home：APP的首頁，必須傳widget物件
 
       child: MaterialApp(
         title: 'Amy App',
@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
         home: MyHomePage(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
@@ -54,7 +55,7 @@ class MyAppState extends ChangeNotifier {
   }
 }
 
-//ＭyHomePage繼承自可動態變化的Widget
+//ＭyHomePage繼承自可動態變化的StatefulWidget
 class MyHomePage extends StatefulWidget {
   @override
   //因為整個class可變化，所以用createState來控管狀態，回傳一個private Class : _MyHomePageState()
@@ -105,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 child: page,
+                padding: EdgeInsets.all(50.0),
               ),
             ),
           ],
@@ -144,11 +146,12 @@ class GeneratorPage extends StatelessWidget {
                 label: Text('Like'),
               ),
               SizedBox(width: 10),
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: () {
                   appState.getNext();
                 },
-                child: Text('Next'),
+                icon: const Icon(Icons.navigate_next),
+                label: Text('Next'),
               ),
             ],
           ),
@@ -165,8 +168,11 @@ class FavPage extends StatelessWidget {
 
     if (appState.favorites.isEmpty) {
       return Center(
-        child: Text('no fav'),
-      );
+          child: Text(
+        '尚無添加我的最愛',
+        style:
+            TextStyle(fontSize: 20.0, color: Color.fromARGB(255, 243, 93, 33)),
+      ));
     }
     return ListView(
       children: [
