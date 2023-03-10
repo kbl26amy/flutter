@@ -53,6 +53,11 @@ class MyAppState extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void removeFavorite(WordPair pair) {
+    favorites.remove(pair);
+    notifyListeners();
+  }
 }
 
 //ＭyHomePage繼承自可動態變化的StatefulWidget
@@ -164,6 +169,7 @@ class GeneratorPage extends StatelessWidget {
 class FavPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     var appState = context.watch<MyAppState>();
 
     if (appState.favorites.isEmpty) {
@@ -182,8 +188,17 @@ class FavPage extends StatelessWidget {
         ),
         for (var pair in appState.favorites)
           ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(pair.asLowerCase),
+            leading: IconButton(
+              icon: Icon(Icons.delete, semanticLabel: 'delete'),
+              color: theme.colorScheme.primary,
+              onPressed: () {
+                appState.removeFavorite(pair);
+              },
+            ),
+            title: Text(
+              pair.asLowerCase,
+              semanticsLabel: pair.asPascalCase,
+            ),
           ),
       ],
     );
